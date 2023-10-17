@@ -21,6 +21,9 @@ import { onPaused } from "./handlers/paused.ts";
 import { onUnpaused } from "./handlers/unpaused.ts";
 import { BOF_WALLET } from "./abis/BoFWallet.ts";
 import { onDeposit } from "./handlers/deposit.ts";
+import { onBoFWalletAccountRegistryUpdated } from "./handlers/bofWalletaccountRegistryUpdate.ts";
+import { onOwnershipTransferred } from "./handlers/ownershipTransferred.ts";
+import { onProcessedPartialPayment } from "./handlers/processedPartialPayment.ts";
 
 const manifest = new Manifest('bof-arkiver')
 
@@ -73,6 +76,7 @@ manifest
           RoleRevoked : onRoleRevoked,
           Paused : onPaused,
           Unpaused : onUnpaused, 
+          ProcessedPartialPayment : onProcessedPartialPayment,
         }        
       })
       .addContract({
@@ -85,6 +89,8 @@ manifest
           },
         },
       eventHandlers : {
+        BoFWalletAccountRegistryUpdated : onBoFWalletAccountRegistryUpdated,
+        OwnershipTransferred : onOwnershipTransferred,
         Deposit : onDeposit,
         DepositImmersve : DepositImmersiveHandler,
 
