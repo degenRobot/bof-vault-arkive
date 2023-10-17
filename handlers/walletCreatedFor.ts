@@ -2,6 +2,7 @@ import {BOF_ROUTER} from "../abis/BofRouterFactory.ts"
 import {BOF_WALLET} from "../abis/BoFWallet.ts"
 import {IMMERSIVE_PAYMENT} from "../abis/ImmersvePaymentProtocol.ts"
 import { EventHandlerFor } from "../deps.ts";
+import { BofWallet } from "../entities/bofWallet.ts";
 import { WalletCreatedFor } from "../entities/walletCreatedFor.ts";
 
 
@@ -28,4 +29,12 @@ export const onWalletCreatedFor: EventHandlerFor<typeof BOF_ROUTER, "WalletCreat
         block: Number(block.number),
         timestamp: Number(block.timestamp),
       });    
+
+      await BofWallet.create({
+        owner : owner, 
+        contractAddress : wallet,
+        txHash : event.txHash,
+        block: Number(block.number),
+        timestamp: Number(block.timestamp),      
+      });
 };

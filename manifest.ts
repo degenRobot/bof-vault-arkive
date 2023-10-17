@@ -19,8 +19,10 @@ import { onRoleGranted } from "./handlers/roleGranted.ts";
 import { onRoleRevoked } from "./handlers/roleRevoked.ts";
 import { onPaused } from "./handlers/paused.ts";
 import { onUnpaused } from "./handlers/unpaused.ts";
+import { BOF_WALLET } from "./abis/BoFWallet.ts";
+import { onDeposit } from "./handlers/deposit.ts";
 
-const manifest = new Manifest('yearn-vaults')
+const manifest = new Manifest('bof-arkiver')
 
 manifest
   .addEntity(VaultSnapshot)
@@ -61,17 +63,32 @@ manifest
           "0xd73c2deE4604a1af3Db4E8E07Cf6Fb798aB77982" : 31371857n 
         },
         eventHandlers : {
-          UserDeposit : DepositImmersiveHandler,
-          UserWithdraw : WithdrawImmersiveHandler,
-          LockedFunds : onLockedFunds, 
-          LockedFundsPartialPaymentConfirmation : onLockedFundsPartialPaymentConfirmation, 
-          LockedFundsPaymentConfirmation : onLockedFundsPaymentConfirmation, 
+          //UserDeposit : DepositImmersiveHandler,
+          //UserWithdraw : WithdrawImmersiveHandler,
+          //LockedFunds : onLockedFunds, 
+          //LockedFundsPartialPaymentConfirmation : onLockedFundsPartialPaymentConfirmation, 
+          //LockedFundsPaymentConfirmation : onLockedFundsPaymentConfirmation, 
           RoleAdminChanged : onRoleAdminChanged,
           RoleGranted : onRoleGranted,
           RoleRevoked : onRoleRevoked,
           Paused : onPaused,
           Unpaused : onUnpaused, 
         }        
+      })
+      .addContract({
+        abi : BOF_WALLET,
+        name : "BOF_Wallet",
+        factorySources: {
+          bof_router: {
+            WalletCreated: 'wallet',
+            WalletCreatedFor: 'wallet',
+          },
+        },
+      eventHandlers : {
+        Deposit : onDeposit,
+        DepositImmersve : DepositImmersiveHandler,
+
+      }
       })
 
   )

@@ -2,7 +2,7 @@ import { createEntity } from "../deps.ts";
 
 export interface IDepositImmersive {
   amount: number;
-  user : string,
+  wallet : string,
   txHash : string,
   block: number;
   timestamp: number;
@@ -11,7 +11,7 @@ export interface IDepositImmersive {
 
 export const DepositImmersive = createEntity<IDepositImmersive>("DepositImmersive", {
   amount: { type: Number, index: true },
-  user : String,
+  wallet : String,
   txHash : String,
   block: { type: Number, index: true },
   timestamp: { type: Number, index: true },
