@@ -72,7 +72,7 @@ manifest
         abi : BOF_ROUTER,
         name : "bof_router",
         sources : {
-          "0x3c4d6c6ae4d219665E9E277Ba37B67A79881A865" : 33744993n
+          "0xd98E3AFf1bf37AF330fa180E75ca9801C87176A3" : 40066325n,
         },
         eventHandlers : {
           //AccountRegistryUpdated : onAccountRegistryUpdated,
@@ -87,7 +87,7 @@ manifest
         abi : IMMERSIVE_PAYMENT,
         name : "immersive_payment",
         sources : {
-          "0xd73c2deE4604a1af3Db4E8E07Cf6Fb798aB77982" : 31371857n 
+          "0x91a4ee183763d9fd67F878abCCfFb2D6E51433eA" : 40066325n, 
         },
         eventHandlers : {
 
