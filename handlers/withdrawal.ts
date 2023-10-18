@@ -3,13 +3,13 @@ import {BOF_WALLET} from "../abis/BoFWallet.ts"
 import { EventHandlerFor } from "../deps.ts";
 import { BofBalance } from "../entities/bofBalance.ts";
 import { BOFHistory } from "../entities/bofHistory.ts";
-import { Deposit } from "../entities/deposit.ts";
 import { getWallet } from "../util/getWallet.ts";
 import { getBalance } from "../util/getBalance.ts";
 import { getTransactionCount } from "../util/getTransactionCount.ts";
+import { Withdrawal } from "../entities/withdrawal.ts";
 
 
-export const onDeposit: EventHandlerFor<typeof BOF_WALLET, "Deposit"> = async (
+export const onWithdraw: EventHandlerFor<typeof BOF_WALLET, "Withdraw"> = async (
     {
       event,
       client,
@@ -23,10 +23,10 @@ export const onDeposit: EventHandlerFor<typeof BOF_WALLET, "Deposit"> = async (
       async () => await client.getBlock({ blockNumber: event.blockNumber }),
     );
     const { amount, token, vault } = event.args;
-    console.log("New Deposit From - " + event.address)
+    console.log("New Withdrawal From - " + event.address)
     const wallet = await getWallet(event.address); 
     
-    await Deposit.create({
+    await Withdrawal.create({
         vault : vault,
         token : token,
         amount : Number(amount),
@@ -38,7 +38,7 @@ export const onDeposit: EventHandlerFor<typeof BOF_WALLET, "Deposit"> = async (
 
   // TO DO FIX THIS LOGIC 
   const balance = await getBalance(event.address, token) 
-  const newBalance = BigInt(balance) + amount //currentBalance + amount;
+  const newBalance = BigInt(balance) - amount //currentBalance + amount;
 
   // TO DO SAVE BALANCE 
   await BofBalance.updateOne({
@@ -64,7 +64,7 @@ export const onDeposit: EventHandlerFor<typeof BOF_WALLET, "Deposit"> = async (
     token : token, 
     balanceAfter : Number(newBalance) ,
     txHash : event.transactionHash,
-    type : "Deposit",
+    type : "Withdrawal",
     block: Number(block.number),
     timestamp: Number(block.timestamp),
   })

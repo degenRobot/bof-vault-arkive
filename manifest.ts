@@ -6,19 +6,8 @@ import { onAccountRegistryUpdated } from './handlers/accountRegistryUpdate.ts'
 import { DepositImmersiveHandler } from "./handlers/depositImmersive.ts";
 import { WithdrawImmersiveHandler } from "./handlers/withdrawalImmersive.ts";
 import { IMMERSIVE_PAYMENT } from "./abis/ImmersvePaymentProtocol.ts";
-import { onGovernanceUpdatedBof } from './handlers/govUpdateBofRouter.ts'
 import { onWalletCreatedFor } from "./handlers/walletCreatedFor.ts";
 import { onWalletCreated } from "./handlers/walletCreated.ts";
-import { onWalletWhitelisterUpdated } from "./handlers/walletWhitelisterUpdated.ts";
-import { onWhitelistUpdated } from "./handlers/whiteListUpdated.ts";
-import { onLockedFunds } from "./handlers/lockedFunds.ts";
-import { onLockedFundsPartialPaymentConfirmation } from "./handlers/lockedFundsPartialPaymentConfirmation.ts";
-import { onLockedFundsPaymentConfirmation } from "./handlers/LockedFundsPaymentConfirmation.ts";
-import { onRoleAdminChanged } from "./handlers/roleAdminChanged.ts";
-import { onRoleGranted } from "./handlers/roleGranted.ts";
-import { onRoleRevoked } from "./handlers/roleRevoked.ts";
-import { onPaused } from "./handlers/paused.ts";
-import { onUnpaused } from "./handlers/unpaused.ts";
 import { BOF_WALLET } from "./abis/BoFWallet.ts";
 import { onDeposit } from "./handlers/deposit.ts";
 import { onBoFWalletAccountRegistryUpdated } from "./handlers/bofWalletaccountRegistryUpdate.ts";
@@ -35,6 +24,8 @@ import { GovUpdateBof } from "./entities/govUpdatedBofRouter.ts";
 import { WalletCreated } from "./entities/walletCreated.ts";
 import { WalletCreatedFor } from "./entities/walletCreatedFor.ts";
 import { config } from "./config/config.ts";
+import { onWithdraw } from "./handlers/withdrawal.ts";
+import { Withdrawal } from "./entities/withdrawal.ts";
 
 const manifest = new Manifest('bof-arkiver')
 
@@ -50,14 +41,14 @@ manifest
     GovUpdateBof,
     WalletCreated,
     WalletCreatedFor,
-    
+    Withdrawal,
 
   ])
   .addChain('polygonMumbai', (chain) =>
     chain
       .setOptions(
         {
-          blockRange : 100n,
+          blockRange : 1000n,
           rpcUrl : config.rpcUrl,
         }
       )
@@ -108,6 +99,7 @@ manifest
         OwnershipTransferred : onOwnershipTransferred,
         Deposit : onDeposit,
         DepositImmersve : DepositImmersiveHandler,
+        Withdraw : onWithdraw,
 
       }
       })
