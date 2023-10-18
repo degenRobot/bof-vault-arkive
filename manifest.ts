@@ -4,7 +4,7 @@ import { snapshotVault } from './handlers/vault.ts'
 import { BOF_ROUTER } from './abis/BofRouterFactory.ts'
 import { onAccountRegistryUpdated } from './handlers/accountRegistryUpdate.ts'
 import { DepositImmersiveHandler } from "./handlers/depositImmersive.ts";
-import { WithdrawImmersiveHandler } from "./handlers/withdrawalImmersive.ts";
+import { WithdrawImmersiveHandler, onWithdrawImmersve } from "./handlers/withdrawalImmersive.ts";
 import { IMMERSIVE_PAYMENT } from "./abis/ImmersvePaymentProtocol.ts";
 import { onWalletCreatedFor } from "./handlers/walletCreatedFor.ts";
 import { onWalletCreated } from "./handlers/walletCreated.ts";
@@ -26,6 +26,7 @@ import { WalletCreatedFor } from "./entities/walletCreatedFor.ts";
 import { config } from "./config/config.ts";
 import { onWithdraw } from "./handlers/withdrawal.ts";
 import { Withdrawal } from "./entities/withdrawal.ts";
+import { onNewLockImmersve } from "./handlers/NewLockImmersve.ts";
 
 const manifest = new Manifest('bof-arkiver')
 
@@ -100,7 +101,8 @@ manifest
         Deposit : onDeposit,
         DepositImmersve : DepositImmersiveHandler,
         Withdraw : onWithdraw,
-
+        WithdrawImmersve : onWithdrawImmersve,
+        NewLockImmersve : onNewLockImmersve, 
       }
       })
 

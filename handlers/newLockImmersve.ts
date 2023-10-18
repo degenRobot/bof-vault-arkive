@@ -1,17 +1,16 @@
 import {BOF_ROUTER} from "../abis/BofRouterFactory.ts"
 import {BOF_WALLET} from "../abis/BoFWallet.ts"
-import {IMMERSIVE_PAYMENT} from "../abis/ImmersvePaymentProtocol.ts"
 import { EventHandlerFor } from "../deps.ts";
+import { DepositImmersive } from "../entities/depositImmersive.ts"
 import { BofBalance } from "../entities/bofBalance.ts";
 import { BOFHistory } from "../entities/bofHistory.ts";
-
-import {WithdrawImmersive } from "../entities/withdrawalImmersive.ts"
+import { Deposit } from "../entities/deposit.ts";
+import { getWallet } from "../util/getWallet.ts";
 import { getBalance } from "../util/getBalance.ts";
 import { getTransactionCount } from "../util/getTransactionCount.ts";
-import { getWallet } from "../util/getWallet.ts";
 
 
-export const onWithdrawImmersve: EventHandlerFor<typeof BOF_WALLET, "WithdrawImmersve"> = async (
+export const onNewLockImmersve: EventHandlerFor<typeof BOF_WALLET, "NewLockImmersve"> = async (
     {
       event,
       client,
@@ -25,20 +24,21 @@ export const onWithdrawImmersve: EventHandlerFor<typeof BOF_WALLET, "WithdrawImm
       async () => await client.getBlock({ blockNumber: event.blockNumber }),
     );
     const { amount } = event.args;
+    console.log("New Lock Immersive From - " + event.address)
+
     const wallet = await getWallet(event.address); 
-
-
-    await WithdrawImmersive.create({
-        wallet : contract.address,
+    
+    await DepositImmersive.create({
         amount : amount,
+        wallet : contract.address,
         txHash : event.transactionHash,
         block: Number(block.number),
         timestamp: Number(block.timestamp),
-      });    
+      });  
 
       const token = "0x2FaC06acFAeB42CC3B5327fcF53F48D9Da72749d"
       const balance = await getBalance(event.address, token) 
-      const newBalance = BigInt(balance) - amount //currentBalance + amount;
+      const newBalance = BigInt(balance) // + amount //currentBalance + amount;
     
       // TO DO SAVE BALANCE 
       await BofBalance.updateOne({
@@ -58,13 +58,14 @@ export const onWithdrawImmersve: EventHandlerFor<typeof BOF_WALLET, "WithdrawImm
         user : wallet,
         contractAddress : event.address,
         amount : Number(amount),
-        from : event.address,
-        to : wallet.owner,
+        from : wallet.owner,
+        to : event.address,
         token : token, 
         balanceAfter : Number(newBalance) ,
         txHash : event.transactionHash,
-        type : "Withdraw Immersive",
+        type : "New Lock Immersive",
         block: Number(block.number),
         timestamp: Number(block.timestamp),
       })      
+
 };
