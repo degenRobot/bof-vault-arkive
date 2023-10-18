@@ -10,7 +10,7 @@ export interface IRoleGranted {
   }
 
 
-export const RoleGranted = createEntity<IRoleGranted>("AccountRegistryUpdate", {
+export const RoleGranted = createEntity<IRoleGranted>("RoleGranted", {
   role: String,
   account : String,
   sender : String,

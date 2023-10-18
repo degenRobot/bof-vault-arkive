@@ -9,7 +9,7 @@ export interface IPaused {
   }
 
 
-export const Paused = createEntity<IPaused>("WithdrawImmersive", {
+export const Paused = createEntity<IPaused>("Paused", {
   account : String,
   paused : Boolean,
   txHash : String,

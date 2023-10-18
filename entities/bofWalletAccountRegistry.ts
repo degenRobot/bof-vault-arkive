@@ -9,7 +9,7 @@ export interface IBofAccountRegistryUpdate {
   }
 
 
-export const BofAccountRegistryUpdate = createEntity<IBofAccountRegistryUpdate>("AccountRegistryUpdate", {
+export const BofAccountRegistryUpdate = createEntity<IBofAccountRegistryUpdate>("BofAccountRegistryUpdate", {
   newAccountRegistry: String,
   oldAccountRegistry: String,
   txHash: String,

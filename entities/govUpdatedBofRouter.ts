@@ -9,7 +9,7 @@ export interface IGovUpdateBof {
   }
 
 
-export const GovUpdateBof = createEntity<IGovUpdateBof>("AccountRegistryUpdate", {
+export const GovUpdateBof = createEntity<IGovUpdateBof>("GovUpdateBof", {
   newGov: String,
   oldGov: String,
   txHash: String,

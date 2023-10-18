@@ -24,17 +24,41 @@ import { onDeposit } from "./handlers/deposit.ts";
 import { onBoFWalletAccountRegistryUpdated } from "./handlers/bofWalletaccountRegistryUpdate.ts";
 import { onOwnershipTransferred } from "./handlers/ownershipTransferred.ts";
 import { onProcessedPartialPayment } from "./handlers/processedPartialPayment.ts";
+import { AccountRegistryUpdate } from './entities/accountRegistry.ts'
+import { BofBalance } from "./entities/bofBalance.ts";
+import { BOFHistory } from "./entities/bofHistory.ts";
+import { BofWallet } from "./entities/bofWallet.ts";
+import { BofAccountRegistryUpdate } from "./entities/bofWalletAccountRegistry.ts";
+import { Deposit } from "./entities/deposit.ts";
+import { DepositImmersive } from "./entities/depositImmersive.ts";
+import { GovUpdateBof } from "./entities/govUpdatedBofRouter.ts";
+import { WalletCreated } from "./entities/walletCreated.ts";
+import { WalletCreatedFor } from "./entities/walletCreatedFor.ts";
+import { config } from "./config/config.ts";
 
 const manifest = new Manifest('bof-arkiver')
 
 manifest
-  .addEntity(VaultSnapshot)
+  .addEntities([
+    AccountRegistryUpdate, 
+    BofBalance, 
+    BOFHistory, 
+    BofWallet, 
+    BofAccountRegistryUpdate, 
+    Deposit, 
+    DepositImmersive,
+    GovUpdateBof,
+    WalletCreated,
+    WalletCreatedFor,
+    
+
+  ])
   .addChain('polygonMumbai', (chain) =>
     chain
       .setOptions(
         {
           blockRange : 100n,
-          rpcUrl : 'https://rpc-mumbai.maticvigil.com'
+          rpcUrl : config.rpcUrl,
         }
       )
       /*
@@ -51,12 +75,12 @@ manifest
           "0x3c4d6c6ae4d219665E9E277Ba37B67A79881A865" : 33744993n
         },
         eventHandlers : {
-          AccountRegistryUpdated : onAccountRegistryUpdated,
-          GovernanceUpdated : onGovernanceUpdatedBof,
+          //AccountRegistryUpdated : onAccountRegistryUpdated,
+          //GovernanceUpdated : onGovernanceUpdatedBof,
           WalletCreated : onWalletCreated,
           WalletCreatedFor : onWalletCreatedFor,
-          WalletWhitelisterUpdated : onWalletWhitelisterUpdated,
-          WhitelistUpdated : onWhitelistUpdated,
+          //WalletWhitelisterUpdated : onWalletWhitelisterUpdated,
+          //WhitelistUpdated : onWhitelistUpdated,
         }
       })
       .addContract({
@@ -66,16 +90,7 @@ manifest
           "0xd73c2deE4604a1af3Db4E8E07Cf6Fb798aB77982" : 31371857n 
         },
         eventHandlers : {
-          //UserDeposit : DepositImmersiveHandler,
-          //UserWithdraw : WithdrawImmersiveHandler,
-          //LockedFunds : onLockedFunds, 
-          //LockedFundsPartialPaymentConfirmation : onLockedFundsPartialPaymentConfirmation, 
-          //LockedFundsPaymentConfirmation : onLockedFundsPaymentConfirmation, 
-          RoleAdminChanged : onRoleAdminChanged,
-          RoleGranted : onRoleGranted,
-          RoleRevoked : onRoleRevoked,
-          Paused : onPaused,
-          Unpaused : onUnpaused, 
+
           ProcessedPartialPayment : onProcessedPartialPayment,
         }        
       })
@@ -90,9 +105,9 @@ manifest
         },
       eventHandlers : {
         BoFWalletAccountRegistryUpdated : onBoFWalletAccountRegistryUpdated,
-        OwnershipTransferred : onOwnershipTransferred,
-        Deposit : onDeposit,
-        DepositImmersve : DepositImmersiveHandler,
+        //OwnershipTransferred : onOwnershipTransferred,
+        //Deposit : onDeposit,
+        //DepositImmersve : DepositImmersiveHandler,
 
       }
       })

@@ -10,7 +10,7 @@ export interface IAdminRoleChanged {
   }
 
 
-export const AdminRoleChanged = createEntity<IAdminRoleChanged>("AccountRegistryUpdate", {
+export const AdminRoleChanged = createEntity<IAdminRoleChanged>("AdminRoleChanged", {
   newAdminRole: String,
   oldAdminRole : String,
   role : String,

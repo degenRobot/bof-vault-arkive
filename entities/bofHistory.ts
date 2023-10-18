@@ -20,7 +20,7 @@ export interface IBOFHistory {
   }
 
 
-  export const BOFHistory = createEntity<IBOFHistory>("Deposit", {
+  export const BOFHistory = createEntity<IBOFHistory>("BOFHistory", {
     user : { type: Types.ObjectId, ref: 'Wallet' },
     vault : String,
     contractAddress : String,

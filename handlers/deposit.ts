@@ -6,6 +6,7 @@ import { BOFHistory } from "../entities/bofHistory.ts";
 import { Deposit } from "../entities/deposit.ts";
 import { getWallet } from "../util/getWallet.ts";
 import { getBalance } from "../util/getBalance.ts";
+import { getTransactionCount } from "../util/getTransactionCount.ts";
 
 
 export const onDeposit: EventHandlerFor<typeof BOF_WALLET, "Deposit"> = async (
@@ -36,9 +37,8 @@ export const onDeposit: EventHandlerFor<typeof BOF_WALLET, "Deposit"> = async (
       });    
 
   // TO DO FIX THIS LOGIC 
-  const balance = getBalance(event.address, token) 
-  const currentBalance = 0 //balance.amount 
-  const newBalance = amount //currentBalance + amount;
+  const balance = await getBalance(event.address, token) 
+  const newBalance = BigInt(balance) + amount //currentBalance + amount;
 
   // TO DO SAVE BALANCE 
   await BofBalance.create({
@@ -48,7 +48,7 @@ export const onDeposit: EventHandlerFor<typeof BOF_WALLET, "Deposit"> = async (
   });
 
   // To DO FIND From BOF Hisotry 
-  const currentCount = 0; 
+  const currentCount = getTransactionCount(event.address); 
 
   await BOFHistory.create({
     user : wallet,

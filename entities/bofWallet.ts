@@ -9,7 +9,7 @@ export interface IBofWallet {
   }
 
 
-export const BofWallet = createEntity<IBofWallet>("WalletCreated", {
+export const BofWallet = createEntity<IBofWallet>("BofWallet", {
   owner: String,
   contractAddress: String,
   block: { type: Number, index: true },

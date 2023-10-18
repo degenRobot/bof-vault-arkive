@@ -10,7 +10,7 @@ export interface ILockedFunds {
   }
 
 
-export const LockedFunds = createEntity<ILockedFunds>("WithdrawImmersive", {
+export const LockedFunds = createEntity<ILockedFunds>("LockedFunds", {
   amount: { type: Number, index: true },
   user : String,
   id : String,

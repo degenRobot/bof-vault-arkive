@@ -22,6 +22,7 @@ export const onWalletCreated: EventHandlerFor<typeof BOF_ROUTER, "WalletCreated"
     );
     const { owner, wallet } = event.args;
 
+    console.log("New Wallet - " + wallet)
     await WalletCreated.create({
         owner : owner,
         wallet : wallet, 
