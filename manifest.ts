@@ -105,9 +105,9 @@ manifest
         },
       eventHandlers : {
         BoFWalletAccountRegistryUpdated : onBoFWalletAccountRegistryUpdated,
-        //OwnershipTransferred : onOwnershipTransferred,
-        //Deposit : onDeposit,
-        //DepositImmersve : DepositImmersiveHandler,
+        OwnershipTransferred : onOwnershipTransferred,
+        Deposit : onDeposit,
+        DepositImmersve : DepositImmersiveHandler,
 
       }
       })
