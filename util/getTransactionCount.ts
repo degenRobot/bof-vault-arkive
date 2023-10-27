@@ -3,9 +3,9 @@ import { BOFHistory } from '../entities/bofHistory.ts'
 
 
 export const getTransactionCount = async (address: Address) =>{
-    const record = await BOFHistory.findOne({ contractAddress : address })
-    if (record) {
-      return record.transactionCount
+    const count = await BOFHistory.count({ contractAddress : address })
+    if (count) {
+      return count
     }
     return 0
 

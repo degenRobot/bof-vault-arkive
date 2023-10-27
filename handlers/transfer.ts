@@ -10,7 +10,7 @@ import { Withdrawal } from "../entities/withdrawal.ts";
 import { BofWallet } from "../entities/bofWallet.ts";
 
 
-export const onWithdraw: EventHandlerFor<typeof BOF_WALLET, "Withdraw"> = async (
+export const onTransfer: EventHandlerFor<typeof BOF_WALLET, "Transfer"> = async (
     {
       event,
       client,
@@ -23,19 +23,11 @@ export const onWithdraw: EventHandlerFor<typeof BOF_WALLET, "Withdraw"> = async 
       `getBlock: ${event.blockNumber}`,
       async () => await client.getBlock({ blockNumber: event.blockNumber }),
     );
-    const { amount, token, vault } = event.args;
+    const { amount, token, from, to } = event.args;
     console.log("New Withdrawal From - " + event.address)
     const wallet = await getWallet(event.address); 
     
-    await Withdrawal.create({
-        vault : vault,
-        token : token,
-        amount : Number(amount),
-        wallet : event.address,
-        txHash : event.transactionHash,
-        block: Number(block.number),
-        timestamp: Number(block.timestamp),
-      });    
+    
 
   // TO DO FIX THIS LOGIC 
   const balance = await getBalance(event.address, token) 
@@ -57,25 +49,23 @@ export const onWithdraw: EventHandlerFor<typeof BOF_WALLET, "Withdraw"> = async 
 
   await BOFHistory.create({
     user : wallet,
-    vault : vault,
     contractAddress : event.address,
     amount : Number(amount),
-    from : wallet,
-    to : vault,
+    from : from,
+    to : to,
     token : token, 
     balanceAfter : Number(newBalance) ,
     txHash : event.transactionHash,
-    type : "WITHDRAW",
+    type : "TRANSFER",
     block: Number(block.number),
     timestamp: Number(block.timestamp),
     transactionCount : currentCount + 1,
   })
-
+  
   await BofWallet.findOneAndUpdate({
     contractAddress : event.address
   }, 
   {
     transactionCount : currentCount + 1,
   })
-
 };

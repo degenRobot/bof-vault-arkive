@@ -8,6 +8,7 @@ import { Deposit } from "../entities/deposit.ts";
 import { getWallet } from "../util/getWallet.ts";
 import { getBalance } from "../util/getBalance.ts";
 import { getTransactionCount } from "../util/getTransactionCount.ts";
+import { BofWallet } from "../entities/bofWallet.ts";
 
 
 export const onNewLockImmersve: EventHandlerFor<typeof BOF_WALLET, "NewLockImmersve"> = async (
@@ -58,14 +59,21 @@ export const onNewLockImmersve: EventHandlerFor<typeof BOF_WALLET, "NewLockImmer
         user : wallet,
         contractAddress : event.address,
         amount : Number(amount),
-        from : wallet.owner,
+        from : wallet,
         to : event.address,
         token : token, 
         balanceAfter : Number(newBalance) ,
         txHash : event.transactionHash,
-        type : "New Lock Immersive",
+        type : "NEW_LOCK_IMMERSVE",
         block: Number(block.number),
         timestamp: Number(block.timestamp),
       })      
+
+      await BofWallet.findOneAndUpdate({
+        contractAddress : event.address
+      }, 
+      {
+        transactionCount : currentCount + 1,
+      })  
 
 };

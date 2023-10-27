@@ -26,7 +26,7 @@ export const onWalletCreated: EventHandlerFor<typeof BOF_ROUTER, "WalletCreated"
     await WalletCreated.create({
         owner : owner,
         wallet : wallet, 
-        txHash : event.txHash,
+        txHash : event.transactionHash,
         block: Number(block.number),
         timestamp: Number(block.timestamp),
       });    
@@ -35,8 +35,9 @@ export const onWalletCreated: EventHandlerFor<typeof BOF_ROUTER, "WalletCreated"
     await BofWallet.create({
       owner : owner, 
       contractAddress : wallet,
-      txHash : event.txHash,
+      txHash : event.transactionHash,
       block: Number(block.number),
-      timestamp: Number(block.timestamp),      
+      timestamp: Number(block.timestamp), 
+      transactionCount : 0,     
     })   
 };

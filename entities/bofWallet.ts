@@ -6,6 +6,7 @@ export interface IBofWallet {
     block: number;
     timestamp: number;
     txHash : string;
+    transactionCount : number;
   }
 
 
@@ -15,5 +16,6 @@ export const BofWallet = createEntity<IBofWallet>("BofWallet", {
   block: { type: Number, index: true },
   timestamp: { type: Number, index: true },
   txHash: String,
+  transactionCount : Number,
 
 });

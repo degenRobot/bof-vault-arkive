@@ -24,7 +24,7 @@ export const onGovernanceUpdatedBof: EventHandlerFor<typeof BOF_ROUTER, "Governa
     await GovUpdateBof.create({
         newGov: newGov,
         oldGov : oldGov,
-        txHash : event.txHash,
+        txHash : event.transactionHash,
         block: Number(block.number),
         timestamp: Number(block.timestamp),
       });    

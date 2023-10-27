@@ -1,10 +1,8 @@
 import { Manifest } from 'https://deno.land/x/robo_arkiver@v0.4.22/mod.ts'
-import { VaultSnapshot } from './entities/vault.ts'
-import { snapshotVault } from './handlers/vault.ts'
 import { BOF_ROUTER } from './abis/BofRouterFactory.ts'
 import { onAccountRegistryUpdated } from './handlers/accountRegistryUpdate.ts'
 import { DepositImmersiveHandler } from "./handlers/depositImmersive.ts";
-import { WithdrawImmersiveHandler, onWithdrawImmersve } from "./handlers/withdrawalImmersive.ts";
+import { onWithdrawImmersve } from "./handlers/withdrawalImmersive.ts";
 import { IMMERSIVE_PAYMENT } from "./abis/ImmersvePaymentProtocol.ts";
 import { onWalletCreatedFor } from "./handlers/walletCreatedFor.ts";
 import { onWalletCreated } from "./handlers/walletCreated.ts";
@@ -26,7 +24,10 @@ import { WalletCreatedFor } from "./entities/walletCreatedFor.ts";
 import { config } from "./config/config.ts";
 import { onWithdraw } from "./handlers/withdrawal.ts";
 import { Withdrawal } from "./entities/withdrawal.ts";
-import { onNewLockImmersve } from "./handlers/NewLockImmersve.ts";
+import { onGovernanceUpdatedBof } from "./handlers/govUpdateBofRouter.ts";
+import { onWalletWhitelisterUpdated } from "./handlers/walletWhitelisterUpdated.ts";
+import { onWhitelistUpdated } from "./handlers/whitelistUpdated.ts";
+import { onNewLockImmersve } from "./handlers/newLockImmersve.ts";
 
 const manifest = new Manifest('bof-arkiver')
 
@@ -67,12 +68,12 @@ manifest
           "0xd98E3AFf1bf37AF330fa180E75ca9801C87176A3" : 40066325n,
         },
         eventHandlers : {
-          //AccountRegistryUpdated : onAccountRegistryUpdated,
-          //GovernanceUpdated : onGovernanceUpdatedBof,
+          AccountRegistryUpdated : onAccountRegistryUpdated,
+          GovernanceUpdated : onGovernanceUpdatedBof,
           WalletCreated : onWalletCreated,
           WalletCreatedFor : onWalletCreatedFor,
-          //WalletWhitelisterUpdated : onWalletWhitelisterUpdated,
-          //WhitelistUpdated : onWhitelistUpdated,
+          WalletWhitelisterUpdated : onWalletWhitelisterUpdated,
+          WhitelistUpdated : onWhitelistUpdated,
         }
       })
       .addContract({
@@ -103,6 +104,8 @@ manifest
         Withdraw : onWithdraw,
         WithdrawImmersve : onWithdrawImmersve,
         NewLockImmersve : onNewLockImmersve, 
+        // Transfer : 
+
       }
       })
 

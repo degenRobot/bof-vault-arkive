@@ -5,6 +5,9 @@ import { LockedFunds } from "../entities/lockedFunds.ts";
 import { BOFHistory } from "../entities/bofHistory.ts";
 import { getWallet } from "../util/getWallet.ts";
 import { getBalance } from "../util/getBalance.ts";
+import { BofBalance } from "../entities/bofBalance.ts";
+import { BofWallet } from "../entities/bofWallet.ts";
+import { getTransactionCount } from "../util/getTransactionCount.ts";
 
 
 export const onProcessedPartialPayment: EventHandlerFor<typeof IMMERSIVE_PAYMENT, "ProcessedPartialPayment"> = async (
@@ -27,8 +30,7 @@ export const onProcessedPartialPayment: EventHandlerFor<typeof IMMERSIVE_PAYMENT
     const wallet = getWallet(event.address); 
     const balance = getBalance(event.address, token) 
 
-    const currentBalance = 0 //balance.amount 
-    const newBalance = _amount //currentBalance - amount;
+    const newBalance = Number(balance) -  Number(_amount) //currentBalance - amount;
   
     // TO DO SAVE BALANCE 
     await BofBalance.create({
@@ -38,12 +40,12 @@ export const onProcessedPartialPayment: EventHandlerFor<typeof IMMERSIVE_PAYMENT
     });
   
     // To DO FIND From BOF Hisotry 
-    const currentCount = 0; 
+    const currentCount = await getTransactionCount(event.address); 
   
     await BOFHistory.create({
       user : wallet,
       contractAddress : event.address,
-      amount : _amount,
+      amount : Number(_amount),
       from : wallet,
       to : event.address,
       token : token, 
@@ -52,9 +54,15 @@ export const onProcessedPartialPayment: EventHandlerFor<typeof IMMERSIVE_PAYMENT
       type : "SPEND_IMMERSVE",
       block: Number(block.number),
       timestamp: Number(block.timestamp),
+      transactionCount : currentCount + 1,
     })    
 
-
+    await BofWallet.findOneAndUpdate({
+      contractAddress : event.address
+    }, 
+    {
+      transactionCount : currentCount + 1,
+    })  
 
 
 };

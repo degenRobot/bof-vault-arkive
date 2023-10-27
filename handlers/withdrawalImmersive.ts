@@ -4,6 +4,7 @@ import {IMMERSIVE_PAYMENT} from "../abis/ImmersvePaymentProtocol.ts"
 import { EventHandlerFor } from "../deps.ts";
 import { BofBalance } from "../entities/bofBalance.ts";
 import { BOFHistory } from "../entities/bofHistory.ts";
+import { BofWallet } from "../entities/bofWallet.ts";
 
 import {WithdrawImmersive } from "../entities/withdrawalImmersive.ts"
 import { getBalance } from "../util/getBalance.ts";
@@ -59,12 +60,21 @@ export const onWithdrawImmersve: EventHandlerFor<typeof BOF_WALLET, "WithdrawImm
         contractAddress : event.address,
         amount : Number(amount),
         from : event.address,
-        to : wallet.owner,
+        to : wallet,
         token : token, 
         balanceAfter : Number(newBalance) ,
         txHash : event.transactionHash,
-        type : "Withdraw Immersive",
+        type : "WITHDRAW_IMMERSVE",
         block: Number(block.number),
         timestamp: Number(block.timestamp),
+        transactionCount : currentCount + 1,
       })      
+
+      await BofWallet.findOneAndUpdate({
+        contractAddress : event.address
+      }, 
+      {
+        transactionCount : currentCount + 1,
+      })  
+      
 };
